@@ -1,0 +1,75 @@
+Started 12/07/2014 By David McDonald
+
+v1.1 15/07/2014
+- Added Junk mode, removing everything without a reaction, regardless of fuel or status.
+- Considered pruning factions without a leader but you might get into strife over factions getting along without a leader,
+    suddenly having base turrets turn on friendlies. Won't do that.
+- Added function to remove all free-floating objects. Doesn't do corpses though, they are more complicated
+- Added whatif mode, like Powershell, doesn't make any changes but tells you what it'll do. Good for debugging
+- Added function to remove junk players, players that don't own anything. Also removes them from factions.
+   Considered using players with the <IsDead> attribute True, but that would screw up ownership.
+   Might consider another mode that removes "dead" players and sets ownership of their stuff to "nobody".
+
+v1.1.1 16/07/2014
+- Fixed up Player pruning. Removes player from the FactionPlayer and FactionRequests tables
+- Fixed up Faction pruning. Stopped removing factions who's members don't own anything, will only clear away empty factions now. The player pruner should make this more viable
+   Also removes factions from FactionRelations & FactionRequests
+
+v1.2
+- Added function to kill movement and inertia
+- Added function to soft and hard turn off assemblers and refineries
+- Discovered that Rotors are joined based on proximity, no by an ID. To avoid damage until a solution is found, no object with a stator or a rotor will be removed.
+- Modified PlayerPrune to: Owns Nothing & (Not in a faction OR IsDead). This will remove all junk dead player entries as well as player entries for those that join the server, play for 20secs then leave
+- Added function to remove NPC ships
+
+v1.2.1
+- Added in "barebeacon" cleanup function for when you want to keep things with a beacon on it, regardless of power or anything else
+- Added in --ignore-joint function to ignore the restriction on removing things with joints. USE WITH CAUTION.
+
+v1.3
+- Added support for batteries
+- Refined NPC detection, now looks for DampenersEnabled == 'true'
+
+v1.3.1
+- Unicode faction & player names no longer cause exceptions
+- Added --full-clean option to do --cleanup-objects dead --cleanup-items --prune-players --prune-factions --disable-factories soft
+
+v1.3.2
+- Rewrote for Python 3, should resolve unicode issues
+- Added saving & respawning of asteroids (--save-asteroids & --respawn-asteroids)
+- Removed cleanup modes, replaced with --cleanup-unpowered, --cleanup-include-solar, --cleanup-missing-attrib and --cleanup-missing-subtype
+- Now gives an instructive message if you just double click on the utility
+- Added support for detecting Pistons as a joint
+- Added support for semi-auto batteries
+
+v1.3.3
+- Added logging
+- Added some scripts to the dist folder to make things more user-friendly
+- Added feature to try to determine a cubegrids name based on attached beacons and antennae
+- Removed counting a semi-auto battery as a valid power source as it doesn't always work. Will just stick to detecting "ProducerEnabled" and a charge level above 0
+
+v1.3.4
+- Added more logging, is now more descriptive as to why it's doing something
+- To allow for intentionally disabled ships, changed --cleanup-unpowered to just detect for fueled reactors and charged batteries, regardless if it's disabled or charging. As long as it has the potential for power, it'll be safe.
+- Changed backup naming to <save>.backup and <save>.<timestamp>.backup
+- Fixed up player pruning, was having issues detecting factionless players
+
+v1.3.5
+- Added in more Unicode handing
+- Corrected NPC removal function, was using some old Attrib finding code that an SE update broke
+
+v1.3.6
+- Adjusted XPrint calls for greater error handling
+- Fixed to handle blank / empty names for beacons & antennae
+
+v1.3.7
+- Fixed some issues with NPC detection
+- Added function to remove Refinery queues. They don't do much but as of SE 01.043, can explode into an indefinite amount of entries, causing lag and large save sizes
+- Added ship name detection with new ship naming under the Info tab
+- Updated Disable Factories to work with new SE factory node layout
+
+v1.3.7
+- Added function to remove Spotlights. Only standard, might not work with Steam Workshop spotlights
+
+v2.0 - 24/01/2015
+- Complete rewrite
